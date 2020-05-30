@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/my1.css}">
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">后台管理</h2>
+                <a th:href="@{/}" href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>主页</a>
+                <a href="" class="active m-item item m-mobile-hide"><i class="idea icon"></i>管理景点</a>
+                <a th:href="@{/admin/add}" href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>新增景点</a>
+                <a th:href="@{/admin/delComment}" href="#" class="m-item item m-mobile-hide"><i class="comment icon"></i>管理评论</a>
+                <div class="right m-item m-mobile-hide menu">
+                    <div class="ui dropdown item">
+                        <div class="m-text">
+                            <img class="ui avatar image" th:src="${session.user.portrait}"/>
+                            <span th:name="username">[[${session.user.username}]]</span>
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a th:href="@{/logout}" href="#" class="item">注销</a>
+                            <a th:href="@{/admin/modify}" href="#" class="item">修改密码</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="m-container-small m-padded-tb-massive">
+        <div class="ui container">
+            <table class="ui celled compact teal table">
+                <thead>
+                <tr>
+                    <th>景点</th>
+                    <th>热度</th>
+                    <th>发布时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="scenerie:${sceneries}">
+                        <td th:text="${scenerie.getTitle()}">长隆海洋度假区</td>
+                        <td th:text="${scenerie.getViews()}">23</td>
+                        <td th:text="${#dates.format(scenerie.getCreatTime(),'yyyy-MM-dd')}">2020-03-26 21:50</td>
+                        <td>
+                            <a th:href="@{/delete(id=${scenerie.getId()})}" href="#" onclick="return del();" class="ui mini red basic button">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+    <script>
+        $('.ui.dropdown').dropdown({
+            on : 'hover'
+        });
+
+        function del()
+        {
+
+
+            if(window.confirm("确定要删除吗?"))
+            {
+                return true;
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cps.mapper.SceneryMapper">
+
+    <select id="findAll" resultType="Scenery">
+        select * from scenery ORDER BY id DESC;
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        delete from scenery where id = #{id};
+    </delete>
+
+    <insert id="add" parameterType="Scenery">
+        insert into scenery (title,content,photo,description,creatTime) values (#{title},#{content},#{photo},#{description},#{creatTime});
+    </insert>
+
+    <select id="findCount" resultType="Integer">
+        select count(1) from scenery;
+    </select>
+
+    <select id="findByLimit" resultType="Scenery">
+        select * from scenery ORDER BY id DESC limit #{offset},#{size};
+    </select>
+
+    <select id="findById" resultType="Scenery">
+        select * from scenery where id = #{id};
+    </select>
+
+    <update id="updateViews" parameterType="Integer">
+        update scenery set views = views + 1 where id = #{id};
+    </update>
+
+    <select id="findByQuery" resultType="Scenery">
+        select * from scenery where title REGEXP #{query} ORDER BY id DESC;
+    </select>
+
+    <select id="findPopular" resultType="Scenery">
+        select * from scenery ORDER BY views DESC limit 0,3;
+    </select>
+
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cps.mapper.CommentMapper">
+
+    <insert id="addComment" parameterType="Comment">
+        insert into comment (sid,name,content,email,createTime) values (#{sid},#{name},#{content},#{email},#{createTime});
+    </insert>
+
+    <select id="findById" resultType="Comment">
+        select * from comment where sid = #{sid};
+    </select>
+
+    <select id="findAll" resultType="Comment">
+        select * from comment ORDER BY id DESC;
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        delete from comment where id = #{id};
+    </delete>
+
+</mapper>

@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  thymeleaf:
+  cache: false # 关闭模板缓存
+  mvc:
+    date-format: yyyy-MM-dd # 日期格式化
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/travel?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource # druid数据源
+  messages:
+    basename: i18n.login
+
+# 整合mybatis
+mybatis:
+  # 给pojo里的类起别名
+  type-aliases-package: com.cps.pojo
+  # 识别mapper配置的地址
+  mapper-locations: classpath:mapper/*.xml

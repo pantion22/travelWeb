@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索景点</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/css/my1.css}">
+</head>
+<body>
+
+    <!-- 导航 -->
+    <nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">旅游网</h2>
+                <a href="#" th:href="@{/}" class="m-item item m-mobile-hide"><i class="home icon"></i>主页</a>
+
+                <div class="right m-item item m-mobile-hide">
+                    <form th:action="@{/search}" method="post" name="search">
+                        <div class="ui icon inverted transparent input">
+                            <input type="text" autocomplete="off" name="query" placeholder="搜索">
+                            <i onclick="document.forms['search'].submit();" class="search link icon"></i>
+                        </div>
+                    </form>
+                </div>
+                <a th:href="@{/admin}" href="#" class="right m-item item m-mobile-hide"><i class="key icon"></i>管理</a>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <!-- 中间 -->
+    <div class="m-container-small m-padded-tb-massive animated bounce">
+        <div class="ui container">
+            <div class="ui top attached segment">
+                <div class="ui middle aligned two column grid">
+                    <div class="column">
+                        <h3 class="ui header">搜索到<span th:text="${counts}">1</span>个相关景点</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 博客栏 -->
+        <div class="ui container attached top teal segment">
+            <div class="ui padded vertical segment m-mobile-lr-clear">
+                <div th:if="${counts}==0">很抱歉...未能查到相关景点，可以试一试其他关键词</div>
+            </div>
+
+            <div class="ui padded vertical segment m-mobile-lr-clear" th:each="scenerie:${sceneries}">
+                <div class="ui middle aligned mobile reversed stackable grid">
+                    <!--摘要-->
+                    <div class="eleven wide column">
+                        <h3 class="ui header">
+                            <a th:href="@{/scenery(id=${scenerie.getId()})}" th:text="${scenerie.getTitle()}" class="m-black" >长隆海洋度假区</a>
+                        </h3>
+                        <p th:text="${scenerie.getDescription()}" class="m-text">珠海长隆国际马戏城位于珠海横琴长隆国际海洋度假区内，东临长隆海洋王国，西与长隆横琴湾酒店相连，是专为承办中国国际马戏节打造的世界顶级国际马戏赛场。马戏城作为长隆国际海洋度假区核心建筑之一，成为游客驻足品玩一大景点，真正将演艺娱乐和旅游休闲文化完美结合，让游客全...</p>
+                    </div>
+                    <!-- 图片 -->
+                    <div class="five wide column">
+                        <a href="#">
+                            <img th:src="${scenerie.getPhoto()}" src="https://picsum.photos/id/1015/300/200" alt="" class="ui rounded image">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+    </script>
+</body>
+</html>

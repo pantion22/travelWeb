@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>旅游网主页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/my1.css" th:href="@{/css/my1.css}">
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">旅游网</h2>
+
+                <div class="right m-item item m-mobile-hide">
+                    <form th:action="@{/search}" method="post" name="search">
+                        <div class="ui icon inverted transparent input">
+                            <input type="text" autocomplete="off" name="query" placeholder="搜索">
+                            <i onclick="document.forms['search'].submit();" class="search link icon"></i>
+                        </div>
+                    </form>
+                </div>
+                <a th:href="@{/login}" href="#" class="right m-item item m-mobile-hide"><i class="key icon"></i>管理</a>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <div class="m-container m-padded-tb-massive">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <!-- 左边部分 -->
+                <div class="eleven wide column">
+                    <div class="ui top attached segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <h3 class="ui teal header">珠海欢迎您！</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 景点列表 -->
+                    <div class="ui attached segment">
+                        <div class="ui padded vertical segment" th:each="scenerie:${sceneries}">
+                            <div class="ui middle aligned mobile reversed stackable grid">
+                                <!--摘要-->
+                                <div class="eleven wide column">
+                                    <h3 class="ui header">
+                                        <a th:href="@{/scenery(id=${scenerie.getId()})}" href="#" class="m-black" th:text="${scenerie.getTitle()}">长隆海洋度假区</a>
+                                    </h3>
+                                    <p class="m-text" th:text="${scenerie.getDescription()}">关于长隆海洋度假区的一段描述....</p>
+                                </div>
+                                <!-- 图片 -->
+                                <div class="five wide column">
+                                    <a th:href="@{/scenery(id=${scenerie.getId()})}" href="#">
+                                        <img th:src="${scenerie.getPhoto()}" src="https://picsum.photos/id/1015/300/200" alt="" class="ui rounded image">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="ui bottom attached segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <a href="#" th:if="${pagination.showPrevious}" th:href="@{/(page = ${(pagination.page)-1})}" class="ui mini teal basic button">上一页</a>
+                            </div>
+                            <div class=" right aligned column">
+                                <a href="#" th:if="${pagination.showNext}" th:href="@{/(page = ${(pagination.page)+1})}" class="ui mini teal basic button">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 右边部分 -->
+                <div class="five wide column">
+                    <!-- 资讯 -->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="calendar outline icon"></i>旅游提示
+                                </div>
+                                <div class="right aligned column"></div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <p>出玩时注意关注天气...</p>
+                            <p>带上必备的一些物品...</p>
+                            <p>带上女朋友...</p>
+                        </div>
+                    </div>
+                    <!-- 热门景点 -->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="calendar outline icon"></i>热门景点
+                                </div>
+                                <div class="right aligned column"></div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment" >
+                            <p th:each="popularity:${popularitys}">
+                                <a th:text="${popularity.getTitle()}" th:href="@{/scenery(id=${popularity.getId()})}"  href="#">长隆海洋度假区</a>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- 珠海特色 -->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="calendar outline icon"></i>珠海特色
+                                </div>
+                                <div class="right aligned column"></div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <p>百岛之市 珠海面临南海</p>
+                            <p>众多的海岛风景优美，气候宜人</p>
+                            <p>珠海美食不可错过</p>
+                        </div>
+                    </div>
+                    <!-- 网红店 -->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="calendar outline icon"></i>网红店
+                                </div>
+                                <div class="right aligned column"></div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <p><a href="http://s.dianping.com/topic/47145569?utm_source=forum_pc_search" target="_blank">颓记茶餐厅</a></p>
+                            <p><a href="http://s.dianping.com/topic/51061122?utm_source=forum_pc_tribe" target="_blank">珠海昔食记</a></p>
+                            <p><a href="http://s.dianping.com/topic/51080693?utm_source=forum_pc_search" target="_blank">蓝波斯菊火锅</a></p>
+                            <p><a href="http://s.dianping.com/topic/43523698?utm_source=forum_pc_search" target="_blank">后宫烧烤肉</a></p>
+                        </div>
+                    </div>
+                    <!-- 广告 -->
+                    <div class="ui segment">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="calendar outline icon"></i>广告招聘
+                                </div>
+                                <div class="right aligned column"></div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment">
+                            <p>广告位出租...</p>
+                            <p>自定义...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>景点详情</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/css/my1.css}">
+</head>
+<body>
+
+    <!-- 导航 -->
+    <nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">旅游网</h2>
+                <a href="#" th:href="@{/}" class="m-item item m-mobile-hide"><i class="home icon"></i>主页</a>
+
+                <div class="right m-item item m-mobile-hide">
+                    <form th:action="@{/search}" method="post" name="search">
+                        <div class="ui icon inverted transparent input">
+                            <input type="text" autocomplete="off" name="query" placeholder="搜索">
+                            <i onclick="document.forms['search'].submit();" class="search link icon"></i>
+                        </div>
+                    </form>
+                </div>
+                <a th:href="@{/admin}" href="#" class="right m-item item m-mobile-hide"><i class="key icon"></i>管理</a>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <!-- 中间 -->
+    <div class="m-container-small m-padded-tb-massive animated zoomIn">
+        <div class="ui container">
+            <!-- 头部 -->
+            <div class="ui top attached segment">
+                <div class="ui horizontal">
+                    <div class="content" >
+                        <h3 th:text="${scenery.getTitle()}">珠海桂山岛</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- 大图区域  -->
+            <div class="ui segment attached">
+                <img class="ui fluid image rounded" th:src="${scenery.getPhoto()}">
+            </div>
+            <!-- 内容 -->
+            <div class="ui  segment attached padded">
+                <h2 class="ui center aligned header"><span th:text="${scenery.getTitle()}">珠海桂山岛</span>介绍</h2>
+                <br>
+                <!-- 景点内容 -->
+                <div id="content" class="typo typo-selection m-padded-lr m-padded-tb-big">
+                    <p th:text="${scenery.getContent()}">桂山岛，原名垃圾尾岛。</p>
+                </div>
+            </div>
+            <!-- 景点提示 -->
+            <div class="ui positive attached message">
+                <div class="ui middle aligned grid">
+                    <div class="eleven wide column">
+                        <li>出玩时注意关注天气...</li>
+                        <li>带上必备的一些物品...</li>
+                        <li>带上女朋友...</li>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 留言 -->
+            <div class="ui attached bottom segment">
+                <div id="comment-container" class="ui teal segment">
+                    <div class="ui threaded comments" style="max-width: 100%;">
+                        <h3 class="ui dividing header">评论</h3>
+                        <div th:each="comment,index:${comments}">
+                            <div>
+                                <span th:text="${index.index + 1}">1</span>楼
+                            </div>
+                            <div class="comment">
+                                <a class="avatar">
+                                    <img th:src="@{/images/cpsU.jpg}" >
+                                </a>
+                                <div class="content">
+                                    <a class="author" >
+                                        <span th:text="${comment.getName()}">陈培树</span>
+                                    </a>
+                                    <div class="metadata">
+                                        <span class="date" th:text="${#dates.format(comment.getCreateTime(),'yyyy-MM-dd')}">2020-04-11</span>
+                                    </div>
+                                    <div class="text" th:text="${comment.getContent()}">
+                                        看见这片海，什么脾气都没了！
+                                    </div>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <form id="blog-form" th:action="@{/scenery(id=${scenery.getId()})}" method="post" class="ui form">
+                        <div id="comment-form" class="ui form">
+                            <div class="field">
+                                <textarea name="content" placeholder="输入评论内容"></textarea>
+                            </div>
+                            <div class="fields">
+                                <div class="field m-mobile-wide m-margin-bottom-small">
+                                    <div class="ui left icon input">
+                                        <i class="user icon"></i>
+                                        <input type="text" autocomplete="off" name="name" placeholder="昵称">
+                                    </div>
+                                </div>
+                                <div class="field m-mobile-wide m-margin-bottom-small">
+                                    <div class="ui left icon input">
+                                        <i class="mail icon"></i>
+                                        <input type="text" autocomplete="off" name="email" placeholder="邮箱">
+                                    </div>
+                                </div>
+                                <div class="field m-mobile-wide  m-margin-bottom-small">
+                                    <button type="submit" class="ui teal button m-mobile-wide"><i class="edit icon"></i>发布</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        //评论表单验证
+        $('.ui.form').form({
+            fields: {
+                title: {
+                    identifier: 'content',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入评论内容'
+                    }
+                    ]
+                },
+                content: {
+                    identifier: 'name',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入你的名字'
+                    }]
+                },
+                type: {
+                    identifier: 'email',
+                    rules: [{
+                        type: 'email',
+                        prompt: '请填写正确的邮箱地址'
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>

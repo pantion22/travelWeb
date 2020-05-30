@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>修改密码</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
+    <style>
+        .ct {
+            width: 260px;
+            height: 500px;
+            margin: 180px auto;
+        }
+    </style>
+</head>
+
+<body class="text-center">
+    <div class="ct">
+        <form class="form-signin" th:action="@{/admin/modify/}+${session.user.id}" action="/static" method="post">
+            <h1 class="h3 mb-3 font-weight-normal">请输入新密码</h1>
+
+            <label class="sr-only" >Password</label>
+            <input type="password" name="password" class="form-control"  placeholder="密码" required="">
+            <label class="sr-only" >Password2</label>
+            <input type="password" name="password2" class="form-control"  placeholder="确认密码" required="">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="sub">确定</button>
+
+        </form>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(function(){
+       
+        $("#sub").click(function(){
+       
+        var password = $("input[name='password']").val();
+
+        var password2 = $("input[name='password2']").val();
+        if(password != password2){
+        alert("两次密码不一致!");
+        $("input[name='password']").val("");
+        $("input[name='password2']").val("");
+        return false;
+        }
+        });
+        });
+</script>
+
+</html>
